@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Demo - 3-Tier Application</title>
+</head>
+<body>
+    <h1>Spring Boot Demo - 3-Tier Application</h1>
+    <h2>Message from Database:</h2>
+    <div id="message">Loading...</div>
+    
+    <script>
+        // Simple JavaScript to fetch data from the REST API
+        fetch('/api/message')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('message').textContent = data;
+            })
+            .catch(error => {
+                document.getElementById('message').textContent = 'Error loading message: ' + error;
+            });
+    </script>
+</body>
+</html>
