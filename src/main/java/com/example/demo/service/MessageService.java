@@ -17,12 +17,8 @@ public class MessageService {
      * Get the first message from the database
      * @return String content of the first message, or default message if none exists
      */
-    public String getMessage() {
-        List<Message> messages = messageRepository.findAll();
-        if (!messages.isEmpty()) {
-            return messages.get(0).getContent();
-        }
-        return "Hello from Spring Boot! No messages found in database.";
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
     }
     
     /**
