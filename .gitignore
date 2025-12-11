@@ -64,3 +64,7 @@ hs_err_pid*
 
 ### Session Files ###
 SESSION_INDEX_*.md
+
+### Documentation ###
+CLAUDE.md
+PROJECT_PROGRESS.md
