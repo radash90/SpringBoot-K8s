@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: frontend-ns
+  labels:
+    app: frontend-app
+    tier: web
+spec:
+  # Service type: LoadBalancer for external access
+  type: LoadBalancer
+
+  # Selector: Find pods to route traffic to
+  selector:
+    app: frontend-app            # Must match deployment pod labels
+
+  # Port mapping
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80                     # External port (what users connect to)
+    targetPort: 80               # Container port (where Nginx listens)
+
+  # Optional: Session affinity (sticky sessions)
+  sessionAffinity: None
