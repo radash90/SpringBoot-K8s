@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: frontend-ns          # Goes in frontend namespace
+  labels:
+    app: frontend-app              # Label for the deployment itself
+    tier: web                      # Tier label (used by network policies)
+spec:
+  # Number of pod replicas for high availability
+  replicas: 2                      # 2 pods for load balancing
+
+  # Selector: How deployment finds its pods
+  selector:
+    matchLabels:
+      app: frontend-app            # Must match template labels below
+
+  # Pod template: What to create
+  template:
+    metadata:
+      labels:
+        app: frontend-app          # Service will use this to find pods
+        tier: web                  # For network policies
+    spec:
+      containers:
+      - name: frontend
+        # Your Docker image (we'll build and push this next)
+        image: radash90/frontend-app:1.0
+        imagePullPolicy: Always    # Always pull latest from Docker Hub
+
+        # Port the container exposes
+        ports:
+        - containerPort: 80        # Nginx listens on port 80
+          name: http               # Named port (optional but clear)
+
+        # Resource limits (Nginx is very lightweight)
+        resources:
+          requests:
+            memory: "64Mi"         # Minimum memory needed
+            cpu: "100m"            # 0.1 CPU cores minimum
+          limits:
+            memory: "128Mi"        # Maximum memory allowed
+            cpu: "200m"            # 0.2 CPU cores maximum
+
+        # Health checks
+        livenessProbe:             # Is the container alive?
+          httpGet:
+            path: /                # Check homepage
+            port: 80
+          initialDelaySeconds: 10  # Wait 10s before first check
+          periodSeconds: 10        # Check every 10s
+
+        readinessProbe:            # Is the container ready for traffic?
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5   # Ready faster than liveness
+          periodSeconds: 5

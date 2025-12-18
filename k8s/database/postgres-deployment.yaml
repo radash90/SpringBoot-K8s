@@ -23,12 +23,14 @@ spec:
         - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:
+              # name of the secret from where we get the key
               name: postgres-secret
               key: POSTGRES_DB
         # Environment variables from Secret
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
+              # name of the secret from where we get the key
               name: postgres-secret
               key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
