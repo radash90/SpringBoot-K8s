@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: frontend-ns
+  labels:
+    app: frontend-app
+    tier: web
+  annotations:
+    # NGINX Ingress Controller specific annotations
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # Ingress class: Use nginx (matches NGINX Ingress Controller)
+  ingressClassName: nginx
+
+  # Routing rules
+  rules:
+  - host: localhost
+    http:
+      paths:
+      # Route all traffic to frontend-service
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+
+---
+# Note: This Ingress routes ALL traffic to frontend-service
+# The frontend Nginx then handles internal routing:
+#   - Static files (/, /index.html) served by Nginx
+#   - API requests (/api/*) proxied to backend-service by Nginx reverse proxy
+#
+# Why this architecture?
+# 1. Single entry point (Ingress Controller)
+# 2. Backend and database remain completely internal (not exposed via Ingress)
+# 3. Frontend Nginx acts as internal reverse proxy
+# 4. No cross-namespace Ingress complexity
+# 5. Clean security model
+#
+# Future: Change host from "localhost" to your actual domain name (e.g., "myapp.com")
