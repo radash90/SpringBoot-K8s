@@ -7,8 +7,8 @@ metadata:
     app: frontend-app
     tier: web
 spec:
-  # Service type: LoadBalancer for external access
-  type: LoadBalancer
+  # Service type: ClusterIP for internal access (exposed via Ingress)
+  type: ClusterIP
 
   # Selector: Find pods to route traffic to
   selector:

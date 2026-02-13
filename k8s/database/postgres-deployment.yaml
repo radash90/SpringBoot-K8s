@@ -4,7 +4,7 @@ metadata:
   name: postgres-deployment
   namespace: database-ns
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: postgres-db
@@ -18,23 +18,30 @@ spec:
         image: postgres:15-alpine
         ports:
         - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: database-volume
         env:
-        # Environment variables from Secret
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              # name of the secret from where we get the key
-              name: postgres-secret
-              key: POSTGRES_DB
-        # Environment variables from Secret
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              # name of the secret from where we get the key
-              name: postgres-secret
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_PASSWORD
+          # Environment variables from Secret
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                # name of the secret from where we get the key
+                name: postgres-secret
+                key: POSTGRES_DB
+          # Environment variables from Secret
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                # name of the secret from where we get the key
+                name: postgres-secret
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_PASSWORD
+      volumes:
+        - name: database-volume
+          persistentVolumeClaim:
+            claimName: postgres-claim

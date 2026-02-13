@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: springboot
-          image: radash90/springboot-app:2.0
+          image: radash90/springboot-app:2.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
