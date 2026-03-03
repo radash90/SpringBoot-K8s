@@ -29,9 +29,9 @@ This project deploys a full 3-tier web application to Kubernetes (Minikube) and 
 
 | Layer    | Technology                        |
 |----------|-----------------------------------|
-| Frontend | Nginx 1.x (static files + proxy)  |
-| Backend  | Java 17 · Spring Boot 3.2 · Maven |
-| Database | PostgreSQL 15                     |
+| Frontend | Nginx (static files + proxy)  |
+| Backend  | Java · Spring Boot · Maven    |
+| Database | PostgreSQL                    |
 | Container| Docker · Docker Hub               |
 | Orchestration | Kubernetes · Minikube        |
 | Ingress  | NGINX Ingress Controller          |
@@ -67,7 +67,7 @@ The cluster is divided into **three isolated namespaces**, each labelled with a 
 
 ### Prerequisites
 
-- [Minikube](https://minikube.sigs.k8s.io/docs/start/) ≥ v1.30
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) configured to use the Minikube context
 - Docker (for building images; pre-built images are available on Docker Hub)
 
